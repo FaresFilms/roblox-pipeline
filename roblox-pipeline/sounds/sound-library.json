@@ -1,0 +1,54 @@
+{
+  "_comment": "Sound library: Roblox asset IDs grouped by category. Claude reads from this when a game needs a sound. Each category holds several IDs so Claude can pick at random. Humans add IDs after uploading audio to Roblox (Creator Dashboard -> Audio) and pasting the resulting asset ID here. Sounds must be uploaded and moderation-approved by Roblox before they will play.",
+  "_usage": "Reference as rbxassetid://<id> on a Sound instance. Do NOT use a local file path or a cloud URL - Roblox only plays uploaded, approved audio assets.",
+  "categories": {
+    "ui_click": {
+      "description": "Button presses, menu taps, toggles.",
+      "ids": []
+    },
+    "ui_purchase_success": {
+      "description": "Successful buy / reward claim confirmation.",
+      "ids": []
+    },
+    "ui_error": {
+      "description": "Invalid action, can't afford, denied.",
+      "ids": []
+    },
+    "coin_pickup": {
+      "description": "Collecting currency / small reward pops.",
+      "ids": []
+    },
+    "reward_small": {
+      "description": "Common reward / minor success.",
+      "ids": []
+    },
+    "reward_big": {
+      "description": "Rare reward / jackpot / big celebration moment.",
+      "ids": []
+    },
+    "level_up": {
+      "description": "Progression milestone, upgrade unlocked.",
+      "ids": []
+    },
+    "impact_soft": {
+      "description": "Light hits, taps, soft landings.",
+      "ids": []
+    },
+    "impact_hard": {
+      "description": "Heavy hits, big landings, breaks.",
+      "ids": []
+    },
+    "whoosh": {
+      "description": "Movement, transitions, swipes, dashes.",
+      "ids": []
+    },
+    "ambient_loop": {
+      "description": "Looping environmental ambience (NOT background music - SFX/ambience only).",
+      "ids": []
+    },
+    "footstep": {
+      "description": "Player/character movement steps.",
+      "ids": []
+    }
+  }
+}

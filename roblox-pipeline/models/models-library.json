@@ -1,0 +1,14 @@
+{
+  "_comment": "Model & texture library: trusted Roblox asset IDs grouped by category. Claude prefers these over generating geometry. Each entry: id (number), name, source ('uploaded' or 'creator-store'). If nothing here fits, Claude searches the Creator Store via the MCP for a high-rated free asset; if that also fails it logs a request to the game's design/asset-requests.md. Shared source of truth - edit in the repo so everyone gets updates.",
+  "_usage": "Insert by asset id (rbxassetid:// / InsertService / MCP insert). Verify the asset is free/owned and appropriate before use.",
+  "categories": {
+    "prop_small": { "description": "Small set-dressing props (crates, plants, signs).", "assets": [] },
+    "prop_large": { "description": "Large props / structures (buildings, vehicles).", "assets": [] },
+    "character_pet": { "description": "Pet / companion models.", "assets": [] },
+    "character_npc": { "description": "NPC / character models.", "assets": [] },
+    "environment_ground": { "description": "Terrain pieces, floors, paths, platforms.", "assets": [] },
+    "environment_nature": { "description": "Trees, rocks, foliage, water features.", "assets": [] },
+    "texture_material": { "description": "Surface textures / decals / material variants.", "assets": [] },
+    "fx_particle": { "description": "Particle / VFX assets for game feel.", "assets": [] }
+  }
+}
