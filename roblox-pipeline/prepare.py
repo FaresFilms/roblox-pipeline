@@ -41,9 +41,9 @@ from pathlib import Path
 # shared asset libraries. EDIT THESE TWO LINES once with your GitHub details.
 # Until you do, auto-update stays off and the script runs from its local copy.
 # ----------------------------------------------------------------------------
-VERSION = 2  # bump this every time you push a new prepare.py to the repo
-GITHUB_USER = "FaresFilms"
-GITHUB_REPO = "https://github.com/FaresFilms/roblox-pipeline"
+VERSION = 3  # bump this every time you push a new prepare.py to the repo
+GITHUB_USER = "<YOUR_USER>"
+GITHUB_REPO = "<YOUR_REPO>"
 GITHUB_BRANCH = "main"
 RAW_BASE = f"https://raw.githubusercontent.com/{GITHUB_USER}/{GITHUB_REPO}/{GITHUB_BRANCH}"
 CONFIGURED = "<YOUR_" not in RAW_BASE  # True once you've set USER/REPO above
@@ -96,6 +96,7 @@ These standards apply to every build task in this project. Follow them without b
 ## Verify before you report done (every task)
 - Run a playtest via the MCP, then use screen_capture to LOOK at the result. Confirm visually that what you built actually appears and works in the running game - not just that the code compiles.
 - Check the acceptance criteria one by one. Confirm no earlier system regressed. Report what you verified and describe the screenshot evidence.
+- PERSISTENCE: if the task added or changed any saved/persisted player data, prove it survives a rejoin. In the playtest, change the new data (earn currency, buy/equip an item, advance progress), then leave and rejoin, and screen_capture confirmation that it persisted exactly across the rejoin. Saving is NOT done until proven across a leave/rejoin.
 
 ## Code quality
 - Luau types where practical, defensive error handling, clear naming. Each pass must not silently rebuild or break earlier systems. No placeholder logic or TODO stubs in shipped systems.
@@ -166,7 +167,7 @@ Then write one file per build prompt: prompts/01-<slug>.md, prompts/02-<slug>.md
 - For environment/visual steps: shape the space with terrain and lighting, and DRESS it by inserting existing Toolbox / Creator Store assets and our library assets - never generate meshes or materials. Leave a clearly-marked OPTIONAL note for swapping in team-sourced assets later - never block on sourcing.
 - For steps needing the Roblox dashboard (dev products, icon upload): build everything codeable and leave a short, NON-BLOCKING team note for the dashboard action.
 - All CLAUDE.md standards.
-- ACCEPTANCE CRITERIA as a concrete checklist - a definition of done we can verify in Studio (what should work, what the player should see and do) - INCLUDING self-verification: run a playtest, screen_capture the result (and a mobile viewport for UI), confirm it actually appears/works on screen, confirm no earlier system regressed, and fix before reporting done. This is the builder checking its own work, NOT asking the user.
+- ACCEPTANCE CRITERIA as a concrete checklist - a definition of done we can verify in Studio (what should work, what the player should see and do) - INCLUDING self-verification: run a playtest, screen_capture the result (and a mobile viewport for UI), confirm it actually appears/works on screen, confirm no earlier system regressed, and fix before reporting done. This is the builder checking its own work, NOT asking the user. If this prompt adds or changes any PERSISTED player data, its acceptance criteria MUST include a rejoin check: change the new data, leave, rejoin, and screen_capture-confirm it survived exactly (and that the session lock holds).
 
 Favor completeness over brevity - each prompt should capture every detail needed to build that slice without further input. When all files are written, finalize prompts/00-index.md and STOP, listing the files you created.
 """
