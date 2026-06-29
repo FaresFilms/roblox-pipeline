@@ -5,7 +5,7 @@ prepare.py - One-command setup for a new Roblox game project.
 WHAT IT DOES
   1. Checks the GitHub repo for a newer prepare.py and self-updates (once configured)
   2. Installs the Claude Code commands globally (~/.claude/commands):
-     /doc, /prompts, /next, /fixbugs, /define
+     /doc, /prompts, /next, /fixbugs, /use
   3. Installs reusable definitions (~/.claude/definitions/) and the shared asset
      libraries (~/.claude/sound-library.json, ~/.claude/models-library.json)
   4. Scaffolds the per-game folders (design/, prompts/) + CLAUDE.md + asset-requests.md
@@ -41,7 +41,7 @@ from pathlib import Path
 # shared asset libraries. EDIT THESE TWO LINES once with your GitHub details.
 # Until you do, auto-update stays off and the script runs from its local copy.
 # ----------------------------------------------------------------------------
-VERSION = 3  # bump this every time you push a new prepare.py to the repo
+VERSION = 4  # bump this every time you push a new prepare.py to the repo
 GITHUB_USER = "<YOUR_USER>"
 GITHUB_REPO = "<YOUR_REPO>"
 GITHUB_BRANCH = "main"
@@ -203,8 +203,8 @@ For each bug, in order:
 Work through every bug. If an item is actually a design change rather than a defect, flag it separately instead of guessing. When done, summarize what was fixed and anything you couldn't reproduce. Don't ask me questions mid-pass unless a fix would change designed behavior.
 """
 
-DEFINE_MD = """---
-description: Pull a reusable system definition into the current game's design
+USE_MD = """---
+description: Use a reusable system definition in the current game's design
 argument-hint: [definition name, e.g. pets]
 disable-model-invocation: true
 ---
@@ -317,10 +317,14 @@ COMMANDS = {
     "prompts.md": PROMPTS_MD,
     "next.md": NEXT_MD,
     "fixbugs.md": FIXBUGS_MD,
-    "define.md": DEFINE_MD,
+    "use.md": USE_MD,
 }
 
-# Global, reusable system definitions, pulled into a game on demand via /define.
+# Command files we used to ship but have renamed/removed - deleted on each run so
+# stale copies don't linger in ~/.claude/commands.
+DEPRECATED_COMMANDS = ["define.md"]
+
+# Global, reusable system definitions, pulled into a game on demand via /use.
 DEFINITIONS = {
     "pets.md": PETS_MD,
 }
@@ -361,11 +365,16 @@ def install_global_commands():
     cmd_dir.mkdir(parents=True, exist_ok=True)
     for name, content in COMMANDS.items():
         write_file(cmd_dir / name, content, overwrite=True)  # always refresh
+    for old in DEPRECATED_COMMANDS:
+        stale = cmd_dir / old
+        if stale.exists():
+            stale.unlink()
+            say("OK", f"removed deprecated command: {old}")
     say("INFO", f"Location: {cmd_dir}")
 
 
 def install_global_definitions():
-    print("\nInstalling reusable system definitions (global, pulled in via /define)...")
+    print("\nInstalling reusable system definitions (global, pulled in via /use)...")
     def_dir = Path.home() / ".claude" / "definitions"
     def_dir.mkdir(parents=True, exist_ok=True)
     for name, content in DEFINITIONS.items():
@@ -521,9 +530,9 @@ def print_next_steps(claude_ok, mcp_ok):
     print("\n  EVERY game, to start building:")
     print("    1. Open Roblox Studio with your place; toggle the Studio MCP plugin ON.")
     print("    2. From this game folder, run:  claude")
-    print("    3. Type / and confirm you see: doc, prompts, next, fixbugs, define")
+    print("    3. Type / and confirm you see: doc, prompts, next, fixbugs, use")
     print("    4. /doc <your 1-2 sentence game idea>   -> review & edit design/game-document.md")
-    print("    5. /define <name>  (optional)           -> e.g. /define pets, on games that want it")
+    print("    5. /use <name>     (optional)           -> e.g. /use pets, on games that want it")
     print("    6. /prompts                             -> generates the full build prompts")
     print("    7. /next   (repeat)                     -> builds one step at a time")
     print("    8. /fixbugs                             -> after pasting bugs into design/bugs.md")

@@ -1,45 +1,21 @@
-# Roblox Build Pipeline
+# Definitions
 
-Tooling for our Roblox game studio. `prepare.py` sets up a new game project with one command: it installs our Claude Code commands, definitions, and shared asset libraries, scaffolds the game folder, and runs safety checks. It also self-updates from this repo on every run.
+Reusable, write-once specs for systems that recur across our games (pets, and more to come). The point is **define once, offer everywhere, force nowhere** — a definition is pulled into a game only when you choose, never auto-added.
 
-## Repo layout
+## How to use a definition
 
-```
-prepare.py                     # the one-command setup script (self-updating)
-definitions/
-  pets.md                      # reusable system spec, pulled into a game with /define pets
-  README.md
-sounds/
-  sound-library.json           # shared sound asset IDs (rbxassetid), by category
-models/
-  models-library.json          # shared model/texture asset IDs, by category
-```
+1. Download the definition file you want (e.g. `pets.md`) from this folder.
+2. Put it in your Claude commands folder: `~/.claude/definitions/pets.md`
+   (Windows: `C:\Users\<you>\.claude\definitions\pets.md`)
+3. In a game, after `/doc` and before `/prompts`, run:  `/use pets`
+   It reads the file, adapts the numbers/theme to that game, folds it into `design/game-document.md`, and stops for your review.
 
-`prepare.py` fetches `sounds/sound-library.json` and `models/models-library.json` from this repo on each run, so editing them here updates everyone.
+> If you set up the game with `prepare.py`, the current definitions are installed automatically — you only download from here to grab one `prepare.py` doesn't include yet, or a newer version.
 
-## First-time setup (per person, once)
+## Adding a new definition
 
-1. Install Node.js, then `npm install -g @anthropic-ai/claude-code`.
-2. `claude logout` then `claude login` on your Pro/Max account (decline any API-credit prompt — this keeps you off per-token billing).
-3. Connect the Roblox Studio MCP.
-4. Download `prepare.py` from this repo into your `Projects` folder.
+Create `<name>.md` in this folder. Keep it self-contained and adaptable: describe what the system is, the server-authoritative ownership/persistence rules, the monetization (deterministic — no paid random items), and any analytics events. Then anyone can `/use <name>` it.
 
-## Using it (per game)
+## Available definitions
 
-From your `Projects` folder:
-
-```
-python prepare.py "My Game Name"
-```
-
-Then open Studio + the MCP, run `claude` from the game folder, and: `/doc <idea>` -> review -> `/prompts` -> `/next` (repeat) -> `/fixbugs`.
-
-## Updating the pipeline
-
-- **Commands / prompts / standards** (anything inside `prepare.py`): edit, **bump `VERSION`**, push. Everyone gets it on their next run.
-- **Sounds / models**: edit `sounds/sound-library.json` or `models/models-library.json`, push. No version bump needed (fetched fresh every run).
-- **New definition**: add it to the `DEFINITIONS` block in `prepare.py` (and drop a copy in `definitions/`), bump `VERSION`, push.
-
-## Security
-
-`prepare.py` runs the latest version from this repo on each teammate's machine. Keep `main` protected (require PR review) and only add trusted collaborators — anyone who can push to `prepare.py` can run code on everyone's machines.
+- **pets.md** — collectable companions that follow the player (social flex / FOMO), give stacking multipliers, sold via a foot-in-the-door price ladder. Deterministic purchases only.
